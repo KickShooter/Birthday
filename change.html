@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Birthday Card Animation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fef3f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .message {
+            position: absolute;
+            top: 50px;
+            width: 100%;
+            text-align: center;
+            font-size: 48px;
+            color: #d63384;
+            font-weight: bold;
+            font-family: 'Brush Script MT', cursive;
+            text-shadow: 2px 2px 4px #ff80ab;
+            z-index: 100;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .container {
+            position: relative;
+            width: 800px;
+            height: 800px;
+            perspective: 1500px;
+        }
+
+        .card {
+            width: 150px;
+            height: 200px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            border-radius: 10px;
+            overflow: hidden;
+            transform: translate(-50%, -50%);
+            transition: transform 0.3s;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            backface-visibility: hidden;
+        }
+
+        /* Animation for card hover effect */
+        .card:hover {
+            transform: scale(1.1) translate(-50%, -50%);
+        }
+
+        /* Balloons */
+        .balloon {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #ff7eb9, #ff4081);
+            border-radius: 50% 50% 45% 45%;
+            animation: float 6s ease-in-out infinite;
+            z-index: 5;
+        }
+
+        .balloon:before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background: #ff4081;
+            transform: translateX(-50%);
+        }
+
+        /* Confetti */
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ffca28;
+            animation: fall 4s infinite;
+            z-index: 1;
+        }
+
+        /* Flowers */
+        .flower {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: url('flower.png') no-repeat center center;
+            background-size: cover;
+            animation: floatFlowers 7s infinite;
+            z-index: 2;
+        }
+
+        /* Keyframes for Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes fall {
+            0% { top: -10px; left: 0; opacity: 1; }
+            100% { top: 100vh; left: 80vw; opacity: 0; }
+        }
+
+        @keyframes floatFlowers {
+            0% { top: 100vh; left: 10vw; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 0; left: 90vw; opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Greeting Message -->
+    <div class="message">✨🎉 Happy Birthday, [Your Crush's Name]! 🎉✨</div>
+
+    <!-- Container for 3D Cards -->
+    <div class="container" id="cardContainer">
+        <div class="card" onclick="showMessage('You are amazing!')">
+            <img src="image1.jpg" alt="Photo 1">
+        </div>
+        <div class="card" onclick="showMessage('Wishing you all the happiness!')">
+            <img src="image2.jpg" alt="Photo 2">
+        </div>
+        <div class="card" onclick="showMessage('Have the best birthday ever!')">
+            <img src="image3.jpg" alt="Photo 3">
+        </div>
+        <div class="card" onclick="showMessage('You light up every room!')">
+            <img src="image4.jpg" alt="Photo 4">
+        </div>
+        <div class="card" onclick="showMessage('Keep shining bright!')">
+            <img src="image5.jpg" alt="Photo 5">
+        </div>
+    </div>
+
+    <!-- Floating Balloons -->
+    <div class="balloon" style="top: 10vh; left: 5vw; animation-delay: 0s;"></div>
+    <div class="balloon" style="top: 15vh; left: 15vw; animation-delay: 1s;"></div>
+    <div class="balloon" style="top: 20vh; left: 25vw; animation-delay: 2s;"></div>
+
+    <!-- Floating Confetti -->
+    <div class="confetti" style="left: 10vw; animation-delay: 0s;"></div>
+    <div class="confetti" style="left: 20vw; animation-delay: 0.5s;"></div>
+    <div class="confetti" style="left: 30vw; animation-delay: 1s;"></div>
+    <div class="confetti" style="left: 40vw; animation-delay: 1.5s;"></div>
+
+    <!-- Floating Flowers -->
+    <div class="flower" style="animation-delay: 0s;"></div>
+    <div class="flower" style="animation-delay: 2s; left: 30vw;"></div>
+    <div class="flower" style="animation-delay: 4s; left: 60vw;"></div>
+
+    <!-- GSAP, Draggable Plugin, and Sound -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/Draggable.min.js"></script>
+    <script>
+        // Function to display a message
+        function showMessage(message) {
+            alert(message);
+        }
+
+        // Shuffle Sound Effect
+        const soundEffect = new Audio('shuffle-sound.mp3'); // Add your sound file here
+
+        // GSAP Animation for 3D Circle Shuffle
+        const cards = document.querySelectorAll('.card');
+        const radius = 200; // Radius of the circle
+        const totalCards = cards.length;
+
+        // Create a timeline for automated rotation
+        const rotateTimeline = gsap.timeline({ repeat: -1, ease: "power1.inOut" });
+
+        // Position each card in a circular pattern and animate
+        cards.forEach((card, index) => {
+            const angle = (index / totalCards) * Math.PI * 2; // Calculate angle for each card
+            const x = Math.cos(angle) * radius; // X position based on angle and radius
+            const y = Math.sin(angle) * radius; // Y position based on angle and radius
+
+            // GSAP animation to move cards in a circle and add 3D rotation
+            rotateTimeline.to(card, {
+                x: x,
+                y: y,
+                z: 50,
+                rotationY: 360,
+                duration: 4,
+                onStart: () => soundEffect.play(), // Play sound when shuffle starts
+            }, 0);
+        });
+
+        // Draggable functionality for manual rotation
+        Draggable.create(".container", {
+            type: "rotation",
+            onPress: () => rotateTimeline.pause(), // Pause animation while dragging
+            onRelease: () => rotateTimeline.resume() // Resume animation after dragging
+        });
+    </script>
+
+</body>
+</html>
